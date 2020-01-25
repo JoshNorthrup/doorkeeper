@@ -274,6 +274,10 @@ module Doorkeeper
            default: {},
            deprecated: { message: "Customize Doorkeeper models instead" }
 
+    # Hook to allow arbitrary user-application access enforcement
+    option :resource_owner_application_access,
+           default: ->(_application, _resource_owner) { true }
+
     # Allows to customize OAuth grant flows that +each+ application support.
     # You can configure a custom block (or use a class respond to `#call`) that must
     # return `true` in case Application instance supports requested OAuth grant flow

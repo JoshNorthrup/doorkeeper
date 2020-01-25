@@ -72,6 +72,10 @@ module Doorkeeper::Orm::ActiveRecord::Mixins
         hash
       end
 
+      def viewable_to_resource_owner?(resource_owner)
+        Doorkeeper.configuration.resource_owner_application_access.call(self, resource_owner)
+      end
+
       private
 
       def generate_uid

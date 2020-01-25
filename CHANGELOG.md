@@ -7,6 +7,7 @@ User-visible changes worth mentioning.
 
 ## master
 
+- [#1354] Add option to authorize the calling user to access an application.
 - [#1356] Invalidate duplicated scopes for Access Tokens and Grants in database.
 - [#1357] Fix `Doorkeeper::OAuth::PreAuthorization#as_json` method causing 
   `Stack level too deep` error with AMS (fix #1312).

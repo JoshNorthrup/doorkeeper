@@ -7,6 +7,7 @@ module Doorkeeper
 
       validate :client_id,             error: :invalid_request
       validate :client,                error: :invalid_client
+      validate :access_to_client,      error: :invalid_client
       validate :redirect_uri,          error: :invalid_redirect_uri
       validate :params,                error: :invalid_request
       validate :response_type,         error: :unsupported_response_type
@@ -17,7 +18,7 @@ module Doorkeeper
       attr_reader :server, :client_id, :client, :redirect_uri, :response_type, :state,
                   :code_challenge, :code_challenge_method, :missing_param
 
-      def initialize(server, attrs = {})
+      def initialize(server, attrs = {}, resource_owner = nil)
         @server                = server
         @client_id             = attrs[:client_id]
         @response_type         = attrs[:response_type]
@@ -26,6 +27,7 @@ module Doorkeeper
         @state                 = attrs[:state]
         @code_challenge        = attrs[:code_challenge]
         @code_challenge_method = attrs[:code_challenge_method]
+        @resource_owner        = resource_owner
       end
 
       def authorizable?
@@ -136,6 +138,10 @@ module Doorkeeper
           client_name: client.name,
           status: I18n.t("doorkeeper.pre_authorization.status"),
         }
+      end
+
+      def validate_access_to_client
+        client.application.viewable_to_resource_owner?(@resource_owner)
       end
     end
   end
